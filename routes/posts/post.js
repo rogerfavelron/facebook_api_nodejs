@@ -10,7 +10,7 @@ router.use('/:postId/comments',commentRouter);
 router.get('/', async(req,res,next)=>{
 
 //get all the posts of the friends and user, show the last loaded 10
-const loggedInUser = await User.findOne({_id:req.payload.id});
+const loggedInUser = await User.findOne({_id:req.payload._id});
 const posts = await Post.find({
     author:[loggedInUser._id, ...loggedInUser.friends]
 })

@@ -6,6 +6,7 @@ const postsRouter = require('./posts/post');
 const usersRouter = require('./users/users');
 
 /* GET home page. */
+
 router.use("/auth", authRouter);
 router.use("/posts", postsRouter);
 router.use("/users", usersRouter);
