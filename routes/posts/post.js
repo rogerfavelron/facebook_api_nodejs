@@ -5,7 +5,12 @@ const User = require('../../models/User');
 const Post = require('../../models/Post');
 const commentRouter = require('./comment')
 
+const  getTokenData = require("../../utils/getTokenData");
 router.use('/:postId/comments',commentRouter);
+router.use(
+  passport.authenticate("jwt", { session: false })
+);
+router.use(getTokenData);
 
 router.get('/', async(req,res,next)=>{
 

@@ -6,9 +6,13 @@ const User = require('../../models/User');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const bcrypt = require('bcryptjs');
-
+const getTokenData = require("../../utils/getTokenData");
 
 router.use("/friends", friendsRouter);
+router.use(
+    passport.authenticate("jwt", { session: false })
+);
+router.use(getTokenData);
 
 
 // GET all users
@@ -28,7 +32,7 @@ router.post("/search", body("firstTerm").trim().escape(),
     body("secondTerm").trim().escape(),
     async (req, res, next) => {
 
-       
+
         const { firstTerm, secondTerm } = req.body;
 
         const bestMatchUser = await User.findOne({
@@ -61,21 +65,21 @@ router.post("/search", body("firstTerm").trim().escape(),
                 .json({ message: "User not found", error: "User not found" });
         }
     }
-    
+
 );
 
 // GET specific user
-router.get( "/:userId",async (req, res, next) => {
-        try {
-            const user = await User.findById(req.params.userId)
-                .populate("friends")
-                .populate("friendRequests")
-                .populate("posts");
-            res.status(200).json({ user: user });
-        } catch (err) {
-            return res.status(500).json({ error: err.message });
-        }
+router.get("/:userId", async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.userId)
+            .populate("friends")
+            .populate("friendRequests")
+            .populate("posts");
+        res.status(200).json({ user: user });
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
     }
+}
 );
 
 // PUT update user details
@@ -93,7 +97,7 @@ router.put("/:userId",
 
     async (req, res, next) => {
         const { firstName, lastName, email, password } = req.body;
-        
+
 
         const errors = validationResult(req);
 
@@ -102,7 +106,7 @@ router.put("/:userId",
         }
 
         try {
-            const hashedPassword = await bcrypt.hash(password,10);
+            const hashedPassword = await bcrypt.hash(password, 10);
             const user = await User.findById(req.payload._id);
 
             user.first_name = firstName;
@@ -112,7 +116,7 @@ router.put("/:userId",
 
             const updatedUser = await user.save();
             const obj = {
-                sub:user._id
+                _id: user._id
             }
             const token = jwt.sign(obj, process.env.SECRET);
             return res.status(201).json({

@@ -10,8 +10,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 
-
-
+//no need to authenticate with passport-jwt here, since these are auth routes
 router.post('/register',
     body('email').trim().isEmail().normalizeEmail().escape(),
     body('first_name').trim().isLength({ min: 1, max: 30 }).escape(),
@@ -44,7 +43,7 @@ router.post('/register',
                         console.log('doffy 3 ');
                         if (err) return res.status(400).json({ message: 'error creating user' })
                         const obj = {
-                            sub: user._id
+                            _id: user._id
                         }
                         const token = jwt.sign(obj, process.env.SECRET);
 
@@ -88,7 +87,7 @@ router.post('/login',
                             return res.status(400).json({ message: 'wrong password' });
                         }
                         const obj = {
-                            sub: user._id
+                            _id: user._id
                         }
                         console.log("login is successful");
                         const token = jwt.sign(obj, process.env.SECRET);
@@ -168,7 +167,7 @@ router.post('/testdrive', async (req, res, next) => {
         const savedUser = await newUser.save();
 
         const obj = {
-            sub: savedUser._id
+            _id: savedUser._id
         }
         const token = jwt.sign(obj, process.env.SECRET);
         console.log("test drive log in successful");

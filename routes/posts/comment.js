@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 const { body, validationResult } = require('express-validator');
+const  getTokenData = require("../../utils/getTokenData");
+
+router.use(
+  passport.authenticate("jwt", { session: false })
+);
+router.use(getTokenData);
 
 router.post("/",
     body("comment", "comment required").trim().isLength({ min: 1 }),

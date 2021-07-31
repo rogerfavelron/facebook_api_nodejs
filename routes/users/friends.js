@@ -3,6 +3,13 @@ const router = express.Router();
 
 const User = require('../../models/User');
 
+const  getTokenData = require("../../utils/getTokenData");
+
+router.use(
+  passport.authenticate("jwt", { session: false })
+);
+router.use(getTokenData);
+
 router.post('/req', async (req, res, next) => {
     const { relUserId } = req.body;
     try {
