@@ -4,6 +4,6 @@ Tech Stack:</br>
 ExpressJS,NodeJS, MongoDB/Mongoose </br>
 Helpers:</br>
 bcrypt for hashing passwords </br>
-jsonwebtoken for authentication</br>
+jsonwebtoken and passport-JWT for authentication</br>
 express-validator </br>
 
