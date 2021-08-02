@@ -1,4 +1,4 @@
-This project is the api for https://github.com/rogerfavelron/facebook_frontend</br>
+This project is the api for https://github.com/rogerfavelron/facebook_frontend_react</br>
 Tech Stack:</br>
 ExpressJS,NodeJS, MongoDB/Mongoose </br>
 Helpers:</br>
