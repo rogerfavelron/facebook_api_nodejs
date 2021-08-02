@@ -7,6 +7,7 @@ const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const bcrypt = require('bcryptjs');
 const getTokenData = require("../../utils/getTokenData");
+const passport = require('passport');
 
 router.use("/friends", friendsRouter);
 router.use(

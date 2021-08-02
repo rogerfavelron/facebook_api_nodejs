@@ -13,3 +13,4 @@ const getTokenData = (req,res,next)=>{
     }
     next();
 }
+module.exports = getTokenData;

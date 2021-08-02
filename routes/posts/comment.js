@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router({mergeParams:true});
 const { body, validationResult } = require('express-validator');
 const  getTokenData = require("../../utils/getTokenData");
+const passport = require('passport');
+const Post = require('../../models/Post');
+const Comment = require('../../models/Comment');
+
 
 router.use(
   passport.authenticate("jwt", { session: false })

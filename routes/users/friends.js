@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../../models/User');
+const passport = require('passport');
 
 const  getTokenData = require("../../utils/getTokenData");
 
@@ -10,6 +11,7 @@ router.use(
 );
 router.use(getTokenData);
 
+//make friend request
 router.post('/req', async (req, res, next) => {
     const { relUserId } = req.body;
     try {
@@ -67,7 +69,42 @@ router.delete('/cancel', async (req, res, next) => {
         })
     }
 })
+//PUT accept friend request
+router.put('/accept', async(req,res,next)=>{
+    const {relUserId}= req.body;
+    try{
+        const relUser = await User.findById(relUserId);
+        const acceptingUser = await User.findById(req.payload._id);
 
+        if(!acceptingUser.friendRequests.includes(relUserId)){
+            return res.status(400).json({
+                message:"friend request not found"
+            });
+        }
+        const updatedFriendReqs = acceptingUser.friendRequests.filter(
+            (friendReq) => friendReq != relUserId
+          );
+          acceptingUser.friendRequests = updatedFriendReqs;
+          const updatedFriends = [...acceptingUser.friends, relUserId];
+          acceptingUser.friends = updatedFriends;
+          const updatedUser = await acceptingUser.save();
+    
+          const updatedRelUserFriends = [...relUser.friends, req.payload._id];
+          relUser.friends = updatedRelUserFriends;
+          await relUser.save();
+    
+          const populatedUser = await User.findById(updatedUser._id).populate(
+            "friends"
+          );
+    
+          return res
+            .status(201)
+            .json({ message: "Friend request accepted", user: populatedUser });
+    }
+    catch(e){
+        return res.status(500).json({error:e.message})
+    }
+})
 
 // DELETE decline (reject) friend request
 
@@ -129,3 +166,4 @@ router.delete(
 );
 
 module.exports = router;
+

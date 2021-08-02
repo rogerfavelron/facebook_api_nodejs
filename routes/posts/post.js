@@ -3,7 +3,8 @@ const router = express.Router({mergeParams:true});
 const {body , validationResult} = require('express-validator');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
-const commentRouter = require('./comment')
+const passport = require('passport');
+const commentRouter = require('./comment');
 
 const  getTokenData = require("../../utils/getTokenData");
 router.use('/:postId/comments',commentRouter);

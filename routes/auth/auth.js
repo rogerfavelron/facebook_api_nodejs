@@ -170,7 +170,9 @@ router.post('/testdrive', async (req, res, next) => {
             _id: savedUser._id
         }
         const token = jwt.sign(obj, process.env.SECRET);
+        console.log(token);
         console.log("test drive log in successful");
+        //console.log(savedUser);
         res.status(201).json({
             message: 'test drive log in successful',
             user: savedUser,
