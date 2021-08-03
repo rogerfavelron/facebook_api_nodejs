@@ -6,6 +6,7 @@ const Post = require('../../models/Post');
 const passport = require('passport');
 const commentRouter = require('./comment');
 
+//use passport-jwt for authentication
 const  getTokenData = require("../../utils/getTokenData");
 router.use('/:postId/comments',commentRouter);
 router.use(
@@ -13,6 +14,8 @@ router.use(
 );
 router.use(getTokenData);
 
+
+//GET get the feed(friends' posts and self posts) for a user 
 router.get('/', async(req,res,next)=>{
 
 //get all the posts of the friends and user, show the last loaded 10
@@ -61,6 +64,7 @@ async (req,res,next)=>{
 }
 )
 
+//PUT edit a post
 router.put('/:postId',
 body('content','content required').trim().isLength({min:1}).escape(),
 async (req,res,next)=>{
@@ -99,6 +103,7 @@ async (req,res,next)=>{
 }
 )
 
+//PUT handle liking a post
 router.put('/:postId/like',async (req,res,next)=>{
 
     try{
@@ -123,6 +128,8 @@ router.put('/:postId/like',async (req,res,next)=>{
         })
     }
 })
+
+//DELETE handle deleting post
 router.delete('/:postId', async(req,res,next)=>{
     try{
         const relPost = await Post.findById(req.params.postId);

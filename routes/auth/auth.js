@@ -11,7 +11,9 @@ const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 
 //no need to authenticate with passport-jwt here, since these are auth routes
+//POST handle register
 router.post('/register',
+    //validate form data
     body('email').trim().isEmail().normalizeEmail().escape(),
     body('first_name').trim().isLength({ min: 1, max: 30 }).escape(),
     body('last_name').trim().isLength({ min: 1, max: 30 }).escape(),
@@ -25,7 +27,7 @@ router.post('/register',
         const reqBody = req.body;
         User.findOne({ email: reqBody.email }, (err, user) => {
             if (user) {
-                console.log('doffy 2 ');
+               
                 return res.status(400).json({ message: 'email is already in use' })
             }
             bcrypt.genSalt(10, (err, salt) => {
@@ -40,7 +42,7 @@ router.post('/register',
                         friendRequests: []
                     }
                     User.create(newUser, (err, user) => {
-                        console.log('doffy 3 ');
+                    
                         if (err) return res.status(400).json({ message: 'error creating user' })
                         const obj = {
                             _id: user._id
@@ -62,7 +64,7 @@ router.post('/register',
 
     });
 
-
+//POST handle login
 router.post('/login',
     body('email').trim().isEmail().normalizeEmail().escape(),
     body('password').trim().isLength({ min: 8, max: 64 }).escape()
@@ -109,6 +111,7 @@ router.post('/login',
 
     })
 
+//POST handle testdrive
 router.post('/testdrive', async (req, res, next) => {
     const oldUser = await User.findOne({ email: 'testuser@testuser.com' });
     let otherUsers = [];

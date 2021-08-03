@@ -11,7 +11,7 @@ router.use(
 );
 router.use(getTokenData);
 
-//make friend request
+//POST make friend request
 router.post('/req', async (req, res, next) => {
     const { relUserId } = req.body;
     try {

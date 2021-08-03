@@ -6,12 +6,13 @@ const passport = require('passport');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 
-
+//use passport jwt authentication
 router.use(
   passport.authenticate("jwt", { session: false })
 );
 router.use(getTokenData);
 
+//POST handle creating comment
 router.post("/",
     body("comment", "comment required").trim().isLength({ min: 1 }),
 
@@ -49,6 +50,7 @@ router.post("/",
     }
 );
 
+//PUT handle editing comment
 router.put(
     "/:commentId",
   
@@ -88,6 +90,7 @@ router.put(
     }
   );
   
+  //DELETE handle deleting comment
   router.delete('/commentId',async (req,res,next)=>{
     try{
         const relComment = await Comment.findById(req.params.commentId);
