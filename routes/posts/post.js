@@ -18,6 +18,7 @@ router.use(getTokenData);
 //GET get the feed(friends' posts and self posts) for a user 
 router.get('/', async(req,res,next)=>{
 
+console.log("got a get post request ");
 //get all the posts of the friends and user, show the last loaded 10
 const loggedInUser = await User.findOne({_id:req.payload._id});
 const posts = await Post.find({
