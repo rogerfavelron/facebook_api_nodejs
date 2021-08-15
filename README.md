@@ -1,4 +1,6 @@
-This project is the api for https://github.com/rogerfavelron/facebook_frontend_react</br>
+This is a facebook API clone</br>
+Functionalities: Posting, commenting , adding friends, authentication/login </br>
+
 Tech Stack:</br>
 ExpressJS,NodeJS, MongoDB/Mongoose </br>
 Helpers:</br>
